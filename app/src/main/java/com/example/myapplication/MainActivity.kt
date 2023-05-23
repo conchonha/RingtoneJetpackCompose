@@ -47,17 +47,16 @@ class MainActivity : ComponentActivity() {
             keepSplashScreen
         }
 
-        lifecycleScope.launch {
-            delay(2000)
-            keepSplashScreen = false
-        }
+//        lifecycleScope.launch {
+//            delay(2000)
+//            keepSplashScreen = false
+//        }
 
         setContent {
-            MyApplicationTheme {
+            MyApplicationTheme (true){
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
                 ) {
                    Navigation()
                 }
@@ -66,70 +65,16 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun LoginScreen() {
-    // Biến trạng thái
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 20.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.Start
-    ) {
-        Text(
-            text = stringResource(id = R.string.app_name),
-            style = MaterialTheme.typography.labelLarge,
-            modifier = Modifier.padding(bottom = 16.dp),
-            color = Color.Red,
-            fontStyle = FontStyle.Italic,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
-        )
-
-        TextField(
-            value = username,
-            onValueChange = { username = it },
-            label = { Text("Tên đăng nhập") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp)
-        )
-
-        TextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Mật khẩu") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-            visualTransformation = PasswordVisualTransformation()
-        )
-
-        Button(
-            onClick = { /* Xử lý đăng nhập */ },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Đăng nhập")
-        }
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     MyApplicationTheme {
-        LoginScreen()
+        // A surface container using the 'background' color from the theme
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            Navigation()
+        }
     }
 }

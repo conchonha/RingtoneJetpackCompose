@@ -3,18 +3,29 @@ package com.example.myapplication.ui.screen
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -32,14 +43,24 @@ import com.example.myapplication.ui.theme.AppStyle
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 private val page = listOf(PageIntroduce.Introduce1, PageIntroduce.Introduce2)
+private const val PAGE_COUNT = 2
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SlideIntroduce() {
-    ConstraintLayout() {
-        val (text, button) = createRefs()
+    val pagerState = rememberPagerState()
+    val currentPage = remember { mutableStateOf(0) }
+
+    LaunchedEffect(key1 = pagerState.currentPage, block = {
+        currentPage.value = pagerState.currentPage
+    })
+
+    ConstraintLayout {
+        val (row, button) = createRefs()
+
         HorizontalPager(
-            pageCount = 2,
+            pageCount = PAGE_COUNT,
+            state = pagerState,
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top
@@ -49,21 +70,16 @@ fun SlideIntroduce() {
             }
         }
 
-        Button(onClick = {
+        BottomButton(modifier = Modifier.constrainAs(button) {
+            bottom.linkTo(parent.bottom, margin = 20.dp)
+            end.linkTo(parent.end, margin = 20.dp)
+        })
 
-        }, modifier = Modifier
-            .constrainAs(button) {
-                bottom.linkTo(parent.bottom, margin = 20.dp)
-                end.linkTo(parent.end, margin = 20.dp)
-            }
-            .height(35.dp), shape = RectangleShape, colors = ButtonDefaults.buttonColors(
-            colorResource(id = R.color.button)
-        )) {
-            Text(
-                text = stringResource(id = R.string.lbl_get_started),
-                style = AppStyle.bodyStyleNoTheme()
-            )
-        }
+        BottomIndicator(Modifier.constrainAs(row) {
+            bottom.linkTo(button.bottom)
+            top.linkTo(button.top)
+            start.linkTo(parent.start)
+        }, currentPage)
     }
 }
 
@@ -80,9 +96,9 @@ private fun TopLayout(index: Int) {
 }
 
 @Composable
-private fun BodyLayout(index: Int) {
+private fun BodyLayout(index: Int, modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(0.7f)
             .fillMaxHeight(0.8f)
             .padding(start = 10.dp),
@@ -102,6 +118,40 @@ private fun BodyLayout(index: Int) {
             overflow = TextOverflow.Ellipsis,
             maxLines = 4
         )
+    }
+}
+
+@Composable
+private fun BottomButton(modifier: Modifier = Modifier) {
+    Button(
+        onClick = {
+
+        }, modifier = modifier
+            .height(35.dp), shape = RectangleShape, colors = ButtonDefaults.buttonColors(
+            colorResource(id = R.color.h2CB252)
+        )
+    ) {
+        Text(
+            text = stringResource(id = R.string.lbl_get_started),
+            style = AppStyle.bodyStyleNoTheme()
+        )
+    }
+}
+
+@Composable
+private fun BottomIndicator(modifier: Modifier = Modifier, currentPage: MutableState<Int>) {
+    Row(modifier.padding(start = 15.dp)) {
+        (0..1).forEach {
+            Box(
+                Modifier
+                    .height(7.dp)
+                    .width(7.dp)
+                    .background(color =  if (it == currentPage.value) colorResource(id = R.color.h2CB252) else colorResource(
+                        id = R.color.black
+                    ), shape = CircleShape)
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+        }
     }
 }
 
