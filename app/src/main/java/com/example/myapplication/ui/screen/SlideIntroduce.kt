@@ -51,7 +51,7 @@ fun SlideIntroduce() {
     val pagerState = rememberPagerState()
     val currentPage = remember { mutableStateOf(0) }
 
-    LaunchedEffect(key1 = pagerState.currentPage, block = {
+    LaunchedEffect(pagerState, pagerState.currentPage, block = {
         currentPage.value = pagerState.currentPage
     })
 
@@ -61,6 +61,7 @@ fun SlideIntroduce() {
         HorizontalPager(
             pageCount = PAGE_COUNT,
             state = pagerState,
+            modifier = Modifier.fillMaxSize()
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top
