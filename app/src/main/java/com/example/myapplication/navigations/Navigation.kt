@@ -11,7 +11,7 @@ fun Navigation(){
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Router.Slider.router){
         composable(Router.Slider.router){
-            SlideIntroduce(navController = navController)
+            SlideIntroduce()
         }
     }
 }

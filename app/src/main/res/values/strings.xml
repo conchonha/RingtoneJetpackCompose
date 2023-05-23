@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">My Application</string>
+
+    <string name="lbl_title_here_slide2">More than 1 thousand hot, beautiful wallpapers / animations in 4k quality</string>
+    <string name="lbl_description_here_slide_2">Setting call wallpaper, phone wallpaper becomes fast, including many favorite genres such as anime, pet, nature, love, car… 4k display quality, suitable for all screens</string>
+    <string name="lbl_title_here_slide1">Over 1 thousand of the hottest ringtones on the charts, in many countries</string>
+    <string name="lbl_description_here_slide_1">Diverse genres, multinational, many famous singers from countries around the world, suitable for all ages, top charts on Ticktok..</string>
+    <string name="lbl_get_started">Get Started</string>
 </resources>
