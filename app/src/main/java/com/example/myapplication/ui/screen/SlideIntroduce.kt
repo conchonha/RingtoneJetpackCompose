@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
@@ -37,17 +38,20 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavController
 import com.example.myapplication.R
 import com.example.myapplication.enum.PageIntroduce
+import com.example.myapplication.navigations.Router
 import com.example.myapplication.ui.theme.AppStyle
 import com.example.myapplication.ui.theme.MyApplicationTheme
+import kotlinx.coroutines.launch
 
 private val page = listOf(PageIntroduce.Introduce1, PageIntroduce.Introduce2)
 private const val PAGE_COUNT = 2
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SlideIntroduce() {
+fun SlideIntroduce(navController: NavController?) {
     val pagerState = rememberPagerState()
     val currentPage = remember { mutableStateOf(0) }
 
@@ -55,32 +59,36 @@ fun SlideIntroduce() {
         currentPage.value = pagerState.currentPage
     })
 
-    ConstraintLayout {
+    ConstraintLayout(modifier = Modifier.background(colorResource(id = R.color.bg))) {
         val (row, button) = createRefs()
 
-        HorizontalPager(
-            pageCount = PAGE_COUNT,
-            state = pagerState,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top
-            ) {
-                TopLayout(it)
-                BodyLayout(it)
-            }
-        }
+        PagerView(pagerState)
 
         BottomButton(modifier = Modifier.constrainAs(button) {
             bottom.linkTo(parent.bottom, margin = 20.dp)
             end.linkTo(parent.end, margin = 20.dp)
-        })
+        }, navController)
 
         BottomIndicator(Modifier.constrainAs(row) {
             bottom.linkTo(button.bottom)
             top.linkTo(button.top)
             start.linkTo(parent.start)
         }, currentPage)
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun PagerView(pagerState: PagerState) {
+    HorizontalPager(
+        pageCount = PAGE_COUNT, state = pagerState, modifier = Modifier.fillMaxSize()
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top
+        ) {
+            TopLayout(it)
+            BodyLayout(it)
+        }
     }
 }
 
@@ -100,7 +108,7 @@ private fun TopLayout(index: Int) {
 private fun BodyLayout(index: Int, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
-            .fillMaxWidth(0.7f)
+            .fillMaxWidth(0.8f)
             .fillMaxHeight(0.8f)
             .padding(start = 10.dp),
         horizontalAlignment = Alignment.Start,
@@ -108,7 +116,7 @@ private fun BodyLayout(index: Int, modifier: Modifier = Modifier) {
     ) {
         Text(
             text = stringResource(page[index].title),
-            style = AppStyle.titleStyle(),
+            style = AppStyle.titleStyleBold(),
             modifier = Modifier.padding(top = 20.dp)
         )
 
@@ -123,12 +131,14 @@ private fun BodyLayout(index: Int, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun BottomButton(modifier: Modifier = Modifier) {
+private fun BottomButton(modifier: Modifier = Modifier, navController: NavController?) {
     Button(
         onClick = {
-
-        }, modifier = modifier
-            .height(35.dp), shape = RectangleShape, colors = ButtonDefaults.buttonColors(
+            navController?.navigate(Router.Language.router)
+        },
+        modifier = modifier.height(35.dp),
+        shape = RectangleShape,
+        colors = ButtonDefaults.buttonColors(
             colorResource(id = R.color.h2CB252)
         )
     ) {
@@ -147,19 +157,19 @@ private fun BottomIndicator(modifier: Modifier = Modifier, currentPage: MutableS
                 Modifier
                     .height(7.dp)
                     .width(7.dp)
-                    .background(color =  if (it == currentPage.value) colorResource(id = R.color.h2CB252) else colorResource(
-                        id = R.color.black
-                    ), shape = CircleShape)
+                    .background(
+                        color = if (it == currentPage.value) colorResource(id = R.color.h2CB252) else colorResource(
+                            id = R.color.bg1
+                        ), shape = CircleShape
+                    )
             )
             Spacer(modifier = Modifier.width(10.dp))
         }
     }
 }
 
-@Preview(showBackground = true, name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(showBackground = true)
 @Composable
 private fun PreviewSlideIntroduce() {
-    MyApplicationTheme {
-        SlideIntroduce()
-    }
+    SlideIntroduce(null)
 }

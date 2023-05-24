@@ -1,9 +1,127 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="const_vietnam_vi" translatable="false">vi</string>
+    <string name="const_chines_zh" translatable="false">zh</string>
+    <string name="const_france_fr_FR" translatable="false">fr</string>
+    <string name="const_germany_de" translatable="false">de</string>
+    <string name="const_hindi_hi" translatable="false">hi</string>
+    <string name="const_english_en" translatable="false">en</string>
+    <string name="const_spain_es" translatable="false">ES</string>
+    <string name="const_portugal_pt_PT" translatable="false">pt</string>
+
 
     <string name="lbl_title_here_slide2">More than 1 thousand hot, beautiful wallpapers / animations in 4k quality</string>
     <string name="lbl_description_here_slide_2">Setting call wallpaper, phone wallpaper becomes fast, including many favorite genres such as anime, pet, nature, love, car… 4k display quality, suitable for all screens</string>
     <string name="lbl_title_here_slide1">Over 1 thousand of the hottest ringtones on the charts, in many countries</string>
     <string name="lbl_description_here_slide_1">Diverse genres, multinational, many famous singers from countries around the world, suitable for all ages, top charts on Ticktok..</string>
     <string name="lbl_get_started">Get Started</string>
+    <string name="english">EngLish</string>
+    <string name="japan">Japan</string>
+    <string name="korean">Korean</string>
+    <string name="spain">Spain</string>
+    <string name="portugal">Portugal</string>
+    <string name="lbl_title_here">title here</string>
+    <string name="lbl_description_here">description here</string>
+    <string name="hindi">Hindi</string>
+    <string name="germany">Germany</string>
+    <string name="france">France</string>
+    <string name="chinese">Chinese</string>
+    <string name="vietnam">VietNam</string>
+    <string name="application">APPLICATION</string>
+    <string name="lbl_des_language"> will use the first language that it supports from Language and settings. You can select a different language for APP to use if you prefer</string>
+    <string name="lbl_language">Language</string>
+    <string name="lbl_next">NEXT</string>
+    <string name="lbl_suggested_language">SUGGESTED LANGUAGE</string>
+    <string name="lbl_other_language">OTHER LANGUAGE</string>
+    <string name="lbl_wallpaper">Wallpaper</string>
+    <string name="lbl_live_wallpaper">Live Wallpaper</string>
+    <string name="lbl_call">Call Screen</string>
+    <string name="lbl_setting">Setting</string>
+    <string name="lbl_ringtone">Ringtones</string>
+    <string name="lbl_total">Total:</string>
+    <string name="lbl_home">Home</string>
+    <string name="lbl_all_image">Image Category</string>
+    <string name="lbl_see_more">See more</string>
+    <string name="lbl_ringtone_hint">Category ringtone name ...</string>
+    <string name="lbl_wallpaper_hint">Category wallpaper name...</string>
+    <string name="lbl_live_wallpaper_hint">Category live wallpaper name....</string>
+    <string name="lbl_call_hint">Category call screen name...</string>
+    <string name="lbl_home_hint">Category name...</string>
+    <string name="lbl_ringtone_name_hint">Ringtone name...</string>
+    <string name="lbl_set_as_call_ringtone">Set as call ringtone </string>
+    <string name="lbl_set_as_call_message_ringtone">Set as call message ringtone</string>
+    <string name="lbl_set_as_contact_ringtone">Set as contact ringtone</string>
+    <string name="lbl_set_notification_sound">Set as notification sound</string>
+    <string name="lbl_set_as_alarm_ringtone">Set as alarm ringtone</string>
+    <string name="lbl_download">Down load</string>
+    <string name="lbl_favorite">Favorite</string>
+    <string name="lbl_share">Share</string>
+    <string name="share_mp3">Link mp3: %s\n Release application: https://play.google.com/store/apps/details?id=%s</string>
+    <string name="permission_download_denied">You must provide [folder] access when downloading to your phone mp3 </string>
+    <string name="lbl_storage_permission">Storage Permission</string>
+    <string name="lbl_enable_storage_permission">You must enable storage permission in the app to continue downloading mp3 ringtones to your device</string>
+    <string name="lbl_set_ringtone_success"><![CDATA[ You have successfully installed <font color=\'#28b5f5\'> %s </font> as your ringtone success ]]></string>
+    <string name="lbl_set_ringtone_fail">Setting mp3 as ringtone failed, please try again later</string>
+    <string name="lbl_modify_system_setting_permission">Modify system setting</string>
+    <string name="lbl_modify_system_setting_denied">You must enable allow modifying system setting to continue feature setting ringtone</string>
+    <string name="lbl_set_ringtone_message_success"><![CDATA[ You have successfully installed <font color=\'#28b5f5\'> %s </font> as your message ringtone ]]></string>
+    <string name="lbl_set_ringtone_notification_success"><![CDATA[ You have successfully installed <font color=\'#28b5f5\'>%s </font> as your ringtone notification success ]]></string>
+    <string name="lbl_set_ringtone_alarm_success"><![CDATA[ You have successfully installed <font color=\'#28b5f5\'> %s </font> as your ringtone alarm success ]]></string>
+    <string name="lbl_download_success">DownLoad mp3 successfully</string>
+    <string name="lbl_share_app">Down load app at: https://play.google.com/store/apps/details?id=%s</string>
+    <string name="lbl_install">INSTALL</string>
+    <string name="lbl_upgradel_package_vip">Upgrade package vip</string>
+    <string name="lbl_month">Month</string>
+    <string name="lbl_price_month">23.000 đ</string>
+    <string name="lbl_year">Year</string>
+    <string name="lbl_price_year">115.000 đ</string>
+    <string name="lbl_vip_ringtone">999+ Ringtones</string>
+    <string name="lbl_vip_image">999+ Wallpapers</string>
+    <string name="lbl_vip_live_image">999+ Live Wallpapers</string>
+    <string name="lbl_vip_call">999+ Call Image</string>
+    <string name="lbl_vip_free">All future content for free</string>
+    <string name="lbl_vip_not_show_ads">Not Show Ads</string>
+    <string name="lbl_upgradel">Activate Premium</string>
+    <string name="hint_search_contact">Search by name or phone number</string>
+    <string name="lbl_contact_permission">Contact Permission</string>
+    <string name="lbl_enable_contact_permission">You must enable contact permission in the app to continue set ringtones to contact for your device</string>
+    <string name="permission_contact_denied">You must enable allow contact permission to continue feature setting ringtone</string>
+    <string name="lbl_not_found">Sorry..No data found!</string>
+    <string name="lbl_normal">Normal</string>
+    <string name="lbl_phone">000-000-000</string>
+    <string name="lbl_download_image_success"><![CDATA[ You have successfully downloaded <font color=\'#28b5f5\'>Image %s </font> into memory]]></string>
+    <string name="lbl_download_fail">Download failed please try again later</string>
+    <string name="lbl_apply_image_success"><![CDATA[ You have successfully apply <font color=\'#28b5f5\'>Image %s </font> phone screen]]></string>
+    <string name="lbl_apply_image_fail">Apply as phone wallpaper failed, please try again later!</string>
+    <string name="lbl_set_ringtone_contact_error">Can\'t set ringtone for this contact, please try again later</string>
+    <string name="lbl_change_call_default">You must change the system default Call application with this application to continue using the Call Image function of the application</string>
+    <string name="lbl_apply_call_image_success"><![CDATA[ You have applied successfully <font color=\'#28b5f5\'>Image %s </font> as call wallpaper]]></string>
+    <string name="lbl_active">Activate</string>
+    <string name="lbl_help">Help an feedback</string>
+    <string name="lbl_pree">Previous</string>
+    <string name="lbl_play">Play</string>
+    <string name="lbl_call_background">Background call image</string>
+    <string name="lbl_avatar_contact">Avatar contact</string>
+    <string name="lbl_end_call">End call</string>
+    <string name="lbl_answer_the_phone">Answer the phone</string>
+    <string name="lbl_choice">Choice</string>
+    <string name="lbl_apply">Apply</string>
+    <string name="lbl_back">Back</string>
+    <string name="lbl_rate">Rate</string>
+    <string name="lbl_like">Like</string>
+    <string name="lbl_avatar_ads">Avatar ads</string>
+    <string name="lbl_avatar">Avatar</string>
+    <string name="lbl_find">Find</string>
+    <string name="lbl_apply_live_wallpaper_success"><![CDATA[ You have successfully apply <font color=\'#28b5f5\'>Live WallPaper %s </font> phone screen]]></string>
+    <string name="lbl_apply_live_wallpaper_fail">Apply as Live Wallpaper failed, please try again later!</string>
+    <string name="lbl_setting_success">Setting Successfully</string>
+    <string name="lbl_light_mode">Light Mode</string>
+    <string name="lbl_night_mote">Night Mode</string>
+    <string name="lbl_not_found_favorite_content">No favorites need to be displayed</string>
+    <string name="lbl_close">Close</string>
+    <string name="lbl_policy">Policy</string>
+    <string name="lbl_func_not_finish">"Unfinished function "</string>
+    <string name="lbl_call_default">Call Permission</string>
+    <string name="lbl_call_default_permission">You must provide the following permissions to continue using the function</string>
+
 </resources>

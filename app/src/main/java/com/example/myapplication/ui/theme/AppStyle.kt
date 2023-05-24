@@ -6,12 +6,28 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import com.example.myapplication.R
 
-object AppStyle{
+object AppStyle {
+    @Composable
+    fun HeaderStyle() = MaterialTheme.typography.headlineLarge.copy(
+        color = colorResource(
+            id = R.color.title_color
+        ),
+        fontWeight = FontWeight.Bold
+    )
+
     @Composable
     fun titleStyle() = MaterialTheme.typography.titleLarge.copy(
         color = colorResource(
             id = R.color.title_color
         )
+    )
+
+    @Composable
+    fun titleStyleBold() = MaterialTheme.typography.titleLarge.copy(
+        color = colorResource(
+            id = R.color.title_color
+        ),
+        fontWeight = FontWeight.Bold
     )
 
     @Composable
@@ -27,5 +43,12 @@ object AppStyle{
             id = R.color.black
         ),
         fontWeight = FontWeight.Bold
+    )
+
+    @Composable
+    fun smallType() = MaterialTheme.typography.labelSmall.copy(
+        color = colorResource(
+            id = R.color.body_color
+        )
     )
 }
