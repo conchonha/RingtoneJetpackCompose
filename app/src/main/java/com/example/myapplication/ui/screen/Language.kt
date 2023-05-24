@@ -178,13 +178,13 @@ private fun LanguageItem(
 }
 
 
-@Composable
-@Preview(showBackground = true)
-private fun PreviewLanguage() {
-    MyApplicationTheme() {
-        // A surface container using the 'background' color from the theme
-        Surface(modifier = Modifier.fillMaxSize()) {
-            Language(navController = null)
-        }
-    }
-}
+//@Composable
+//@Preview(showBackground = true)
+// fun PreviewLanguage() {
+//    MyApplicationTheme() {
+//        // A surface container using the 'background' color from the theme
+//        Surface(modifier = Modifier.fillMaxSize()) {
+//            Language(navController = null)
+//        }
+//    }
+//}

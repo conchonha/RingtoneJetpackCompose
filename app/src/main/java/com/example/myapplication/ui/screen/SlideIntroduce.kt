@@ -1,6 +1,5 @@
 package com.example.myapplication.ui.screen
 
-import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -40,11 +39,9 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import com.example.myapplication.R
-import com.example.myapplication.enum.PageIntroduce
+import com.example.myapplication.enums.PageIntroduce
 import com.example.myapplication.navigations.Router
 import com.example.myapplication.ui.theme.AppStyle
-import com.example.myapplication.ui.theme.MyApplicationTheme
-import kotlinx.coroutines.launch
 
 private val page = listOf(PageIntroduce.Introduce1, PageIntroduce.Introduce2)
 private const val PAGE_COUNT = 2
@@ -55,6 +52,10 @@ fun SlideIntroduce(navController: NavController?) {
     val pagerState = rememberPagerState()
     val currentPage = remember { mutableStateOf(0) }
 
+    /**
+     * LaunchedEffect(Key1,Key2): Chỉ chạy 1 lần lúc khởi tạo compose,
+     * và được kích hoạt lại khi các giá trị key1,key2 thay đổi giá trị
+     * */
     LaunchedEffect(pagerState, pagerState.currentPage, block = {
         currentPage.value = pagerState.currentPage
     })
@@ -168,8 +169,8 @@ private fun BottomIndicator(modifier: Modifier = Modifier, currentPage: MutableS
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun PreviewSlideIntroduce() {
-    SlideIntroduce(null)
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewSlideIntroduce() {
+//    SlideIntroduce(null)
+//}

@@ -1,4 +1,4 @@
-package com.example.myapplication.enum
+package com.example.myapplication.enums
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
