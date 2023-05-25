@@ -1,4 +1,4 @@
-package com.example.myapplication.presentation.screens.onboard.language.items
+package com.example.myapplication.presentation.screens.onboard.language.widgets
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

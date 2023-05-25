@@ -11,8 +11,8 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.example.myapplication.R
-import com.example.myapplication.presentation.screens.onboard.language.items.AppBar
-import com.example.myapplication.presentation.screens.onboard.language.items.Body
+import com.example.myapplication.presentation.screens.onboard.language.widgets.AppBar
+import com.example.myapplication.presentation.screens.onboard.language.widgets.Body
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 @Composable
@@ -30,11 +30,11 @@ fun Language() {
             end.linkTo(parent.end)
         }, modifierNext = Modifier.constrainAs(next) {
             end.linkTo(parent.end)
-            top.linkTo(parent.top, margin = 10.dp)
+            top.linkTo(parent.top, margin = 15.dp)
         })
 
         Body(Modifier.constrainAs(body) {
-            top.linkTo(next.bottom, 25.dp)
+            top.linkTo(next.bottom, 35.dp)
             start.linkTo(parent.start)
             end.linkTo(parent.end)
             bottom.linkTo(parent.bottom)

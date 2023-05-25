@@ -28,7 +28,7 @@ object Const {
     const val KEY_RINGTONE_DIALOG = "keyRingToneDialog"
 
     //introduce
-    const val KEY_INTRODUCE = "keyIntroduce"
+    const val KEY_FIRST_LAUNCH_INTRODUCE = "keyIntroduce"
 
     //componentList
     const val KEY_TAB = "keyTab"

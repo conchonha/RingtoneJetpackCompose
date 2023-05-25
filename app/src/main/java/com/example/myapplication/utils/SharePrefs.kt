@@ -5,20 +5,16 @@ import android.content.SharedPreferences
 import com.example.myapplication.app.MyApplication
 import com.google.gson.Gson
 
-class SharePrefs private constructor(context: Context) {
-    private lateinit var _sharedPref: SharedPreferences
-    private lateinit var _editor: SharedPreferences.Editor
+class SharePrefs private constructor() {
+    private val _sharedPref: SharedPreferences by lazy {
+        MyApplication.application.getSharedPreferences(
+            this.javaClass.name, Context.MODE_PRIVATE
+        )
+    }
+    private val _editor: SharedPreferences.Editor by lazy { _sharedPref.edit() }
     val gson by lazy { Gson() }
     val sharedPref
         get() = _sharedPref
-
-    /**
-     * init instance of [@see sharedPref] or [@see editor]
-     */
-    init {
-        _sharedPref = context.getSharedPreferences(this.javaClass.name, Context.MODE_PRIVATE)
-        _editor = _sharedPref.edit()
-    }
 
     /**
      * @see _editor null -> throw errors
@@ -46,8 +42,8 @@ class SharePrefs private constructor(context: Context) {
     inline fun <reified T> get(key: String): T? {
 
         return when (T::class) {
-            String::class -> sharedPref.getString(key, null)
-            Boolean::class -> sharedPref.getBoolean(key, false)
+            String::class -> sharedPref.getString(key, EMPTY)
+            Boolean::class -> sharedPref.getBoolean(key, BOOL_DEFAULT)
             Float::class -> sharedPref.getFloat(key, FLOAT_DEFAULT)
             Double::class -> sharedPref.getFloat(key, FLOAT_DEFAULT)
             Int::class -> sharedPref.getInt(key, INT_DEFAULT)
@@ -85,11 +81,12 @@ class SharePrefs private constructor(context: Context) {
 
         const val EMPTY = ""
         const val FLOAT_DEFAULT = -1f
-        const val INT_DEFAULT = -1
+        const val INT_DEFAULT = 0
         const val LONG_DEFAULT = -1L
+        const val BOOL_DEFAULT = false
 
         fun getInstance(): SharePrefs = synchronized(this) {
-            instance ?: SharePrefs(MyApplication.application).also { instance = it }
+            instance ?: SharePrefs().also { instance = it }
         }
     }
 }

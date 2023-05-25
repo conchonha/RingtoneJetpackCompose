@@ -1,9 +1,7 @@
-package com.example.myapplication.presentation.screens.onboard.language.items
+package com.example.myapplication.presentation.screens.onboard.language.widgets
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
@@ -24,20 +21,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myapplication.R
 import com.example.myapplication.domain.model.Display
-import com.example.myapplication.extension.bottomBorder
-import com.example.myapplication.extension.topBorder
+import com.example.myapplication.utils.extension.bottomBorder
+import com.example.myapplication.utils.extension.topBorder
 import com.example.myapplication.presentation.screens.onboard.OnboardEvent
 import com.example.myapplication.presentation.screens.onboard.OnboardingViewModel
+import com.example.myapplication.presentation.screens.onboard.language.Language
 import com.example.myapplication.ui.theme.AppStyle
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.utils.Const
@@ -45,18 +46,21 @@ import com.example.myapplication.utils.Const
 
 @Composable
 internal fun Body(modifier: Modifier = Modifier, viewModel: OnboardingViewModel = hiltViewModel()) {
-    Column(modifier = modifier.padding(horizontal = 20.dp)) {
+    Column(modifier.padding(horizontal = 20.dp)) {
         TextElement()
+
         LanguageItem(
-            modifier = Modifier
+            Modifier
                 .background(
                     colorResource(R.color.bg_card_language), RoundedCornerShape(6.dp)
                 )
-                .padding(horizontal = 10.dp, vertical = 5.dp),
-            display = viewModel.languageState.value,
-            iconEnd = R.drawable.ic_done
+                .padding(10.dp, 5.dp), viewModel.languageState.value, R.drawable.ic_done
         )
-        TextElement(Modifier.padding(top = 15.dp), R.string.lbl_other_language)
+
+        textDescription()
+
+        TextElement(R.string.lbl_other_language)
+
         LazyColumn {
             itemsIndexed(Const.getListLanguage()) { index, item ->
                 LanguageItem(
@@ -71,15 +75,40 @@ internal fun Body(modifier: Modifier = Modifier, viewModel: OnboardingViewModel 
 
 @Composable
 private fun TextElement(
-    modifier: Modifier = Modifier,
     res: Int = R.string.lbl_suggested_language,
 ) {
     Text(
-        text = stringResource(id = res), style = AppStyle.titleStyle().copy(
+        stringResource(res), style = AppStyle.titleStyle().copy(
             color = colorResource(
-                id = R.color.hD7979696
+                R.color.hD7979696
             )
-        ), modifier = modifier.padding(start = 20.dp, bottom = 15.dp)
+        ), modifier = Modifier.padding(20.dp, bottom = 15.dp)
+    )
+}
+
+
+@Composable
+fun textDescription() {
+    val annotatedString = buildAnnotatedString {
+        withStyle(
+            SpanStyle(
+                colorResource(R.color.hD7979696), 16.sp
+            )
+        ) {
+            append(stringResource(R.string.application))
+        }
+        append(": ")
+        withStyle(
+            style = SpanStyle(
+                colorResource(R.color.hD7979696), 11.sp
+            )
+        ) {
+            append(stringResource(R.string.lbl_des_language))
+        }
+    }
+
+    Text(
+        annotatedString, Modifier.padding(20.dp, 15.dp, bottom = 35.dp)
     )
 }
 
@@ -92,17 +121,17 @@ private fun LanguageItem(
 ) {
 
     Row(
-        modifier = modifier
+        modifier
             .fillMaxWidth()
-            .padding(horizontal = 10.dp, vertical = 7.dp)
+            .padding(horizontal = 10.dp, vertical = 3.dp)
             .clickable { viewModel.onEvent(OnboardEvent.ChoiceLanguage(display)) },
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        Arrangement.SpaceBetween,
+        Alignment.CenterVertically
     ) {
-        Row {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             if (iconEnd == null) Image(
                 modifier = Modifier
-                    .width(70.dp)
+                    .width(60.dp)
                     .height(50.dp)
                     .padding(end = 15.dp),
                 painter = painterResource(id = display.iconRes!!),
@@ -113,69 +142,18 @@ private fun LanguageItem(
             )
 
             Column {
-                Text(text = stringResource(id = display.title!!), style = AppStyle.titleStyle())
-                Text(text = stringResource(id = display.content!!), style = AppStyle.smallType())
+                Text(stringResource(display.title!!), style = AppStyle.titleStyle())
+                Text(stringResource(display.content!!), style = AppStyle.smallType())
             }
         }
 
 
         Image(
-            painter = painterResource(viewModel.getIconChoiceLanguage(iconEnd, display.title)),
-            contentDescription = "Done",
+            painterResource(viewModel.getIconChoiceLanguage(iconEnd, display.title)),
+            "Done",
             colorFilter = ColorFilter.tint(
                 colorResource(
-                    id = R.color.h2CB252
-                )
-            ),
-            modifier = Modifier
-                .width(15.dp)
-                .height(15.dp)
-        )
-    }
-}
-
-
-@Composable
-private fun LanguageItemPreview(
-    modifier: Modifier = Modifier,
-    display: Display,
-    iconEnd: Int? = null,
-) {
-
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 10.dp, vertical = 5.dp)
-            .clickable { },
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Row {
-            if (iconEnd == null) Image(
-                modifier = Modifier
-                    .width(70.dp)
-                    .height(50.dp)
-                    .padding(end = 15.dp),
-                painter = painterResource(id = display.iconRes!!),
-                contentDescription = stringResource(
-                    id = display.title!!
-                ),
-                contentScale = ContentScale.Fit
-            )
-
-            Column {
-                Text(text = stringResource(id = display.title!!), style = AppStyle.titleStyle())
-                Text(text = stringResource(id = display.content!!), style = AppStyle.smallType())
-            }
-        }
-
-
-        Image(
-            painter = painterResource(display.iconRes!!),
-            contentDescription = "Done",
-            colorFilter = ColorFilter.tint(
-                colorResource(
-                    id = R.color.h2CB252
+                    R.color.h2CB252
                 )
             ),
             modifier = Modifier
@@ -187,31 +165,11 @@ private fun LanguageItemPreview(
 
 @Composable
 @Preview(showBackground = true)
-fun PreviewBody() {
+private fun PreviewBody() {
     MyApplicationTheme() {
         // A surface container using the 'background' color from the theme
         Surface(modifier = Modifier.fillMaxSize()) {
-            val list = listOf(
-                Display(
-                    R.string.const_english_en,
-                    content = R.string.const_english_en,
-                    iconRes = R.drawable.ic_done
-                ), Display(
-                    R.string.const_english_en,
-                    content = R.string.const_english_en,
-                    iconRes = R.drawable.ic_done
-                )
-            )
-
-            LazyColumn {
-                itemsIndexed(list) { index, item ->
-                    LanguageItemPreview(
-                        modifier = Modifier.getModifierItemLanguage(
-                            index, list.size - Const.INDEX_1
-                        ), item
-                    )
-                }
-            }
+            Language()
         }
     }
 }

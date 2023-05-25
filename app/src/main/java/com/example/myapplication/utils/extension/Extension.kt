@@ -1,4 +1,4 @@
-package com.example.myapplication.extension
+package com.example.myapplication.utils.extension
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
