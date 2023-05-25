@@ -2,7 +2,7 @@ package com.example.myapplication.utils
 
 import com.example.myapplication.R
 import com.example.myapplication.app.MyApplication
-import com.example.myapplication.model.Display
+import com.example.myapplication.domain.model.Display
 
 object Const {
     const val IS_NIGHT_MODE = "isNightMode"

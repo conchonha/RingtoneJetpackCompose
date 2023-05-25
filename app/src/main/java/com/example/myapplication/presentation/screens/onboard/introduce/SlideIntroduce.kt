@@ -1,8 +1,9 @@
-package com.example.myapplication.ui.screen
+package com.example.myapplication.presentation.screens.onboard.introduce
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
+import androidx.compose.foundation.pager.PagerDefaults
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -34,13 +37,13 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import com.example.myapplication.R
 import com.example.myapplication.enums.PageIntroduce
-import com.example.myapplication.navigations.Router
+import com.example.myapplication.presentation.navigations.Router
+import com.example.myapplication.presentation.navigations.navController
 import com.example.myapplication.ui.theme.AppStyle
 
 private val page = listOf(PageIntroduce.Introduce1, PageIntroduce.Introduce2)
@@ -48,8 +51,14 @@ private const val PAGE_COUNT = 2
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SlideIntroduce(navController: NavController?) {
-    val pagerState = rememberPagerState()
+fun SlideIntroduce() {
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        PAGE_COUNT
+    }
+
     val currentPage = remember { mutableStateOf(0) }
 
     /**
@@ -68,7 +77,7 @@ fun SlideIntroduce(navController: NavController?) {
         BottomButton(modifier = Modifier.constrainAs(button) {
             bottom.linkTo(parent.bottom, margin = 20.dp)
             end.linkTo(parent.end, margin = 20.dp)
-        }, navController)
+        })
 
         BottomIndicator(Modifier.constrainAs(row) {
             bottom.linkTo(button.bottom)
@@ -82,15 +91,25 @@ fun SlideIntroduce(navController: NavController?) {
 @Composable
 private fun PagerView(pagerState: PagerState) {
     HorizontalPager(
-        pageCount = PAGE_COUNT, state = pagerState, modifier = Modifier.fillMaxSize()
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top
-        ) {
-            TopLayout(it)
-            BodyLayout(it)
+        modifier = Modifier.fillMaxSize(),
+        state = pagerState,
+        pageSpacing = 0.dp,
+        pageSize = PageSize.Fill,
+        userScrollEnabled = true,
+        reverseLayout = false,
+        beyondBoundsPageCount = PAGE_COUNT,
+        pageNestedScrollConnection = PagerDefaults.pageNestedScrollConnection(
+            Orientation.Horizontal
+        ),
+        pageContent = {
+            Column(
+                modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top
+            ) {
+                TopLayout(it)
+                BodyLayout(it)
+            }
         }
-    }
+    )
 }
 
 @Composable
@@ -132,10 +151,10 @@ private fun BodyLayout(index: Int, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun BottomButton(modifier: Modifier = Modifier, navController: NavController?) {
+private fun BottomButton(modifier: Modifier = Modifier) {
     Button(
         onClick = {
-            navController?.navigate(Router.Language.router)
+            navController.navigate(Router.Language.router)
         },
         modifier = modifier.height(35.dp),
         shape = RectangleShape,
