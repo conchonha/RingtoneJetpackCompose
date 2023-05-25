@@ -1,7 +1,9 @@
 package com.example.myapplication.presentation.screens.onboard.language.items
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,13 +15,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -29,6 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myapplication.R
 import com.example.myapplication.domain.model.Display
+import com.example.myapplication.extension.bottomBorder
+import com.example.myapplication.extension.topBorder
 import com.example.myapplication.presentation.screens.onboard.OnboardEvent
 import com.example.myapplication.presentation.screens.onboard.OnboardingViewModel
 import com.example.myapplication.ui.theme.AppStyle
@@ -40,11 +47,23 @@ import com.example.myapplication.utils.Const
 internal fun Body(modifier: Modifier = Modifier, viewModel: OnboardingViewModel = hiltViewModel()) {
     Column(modifier = modifier.padding(horizontal = 20.dp)) {
         TextElement()
-        LanguageItem(display = viewModel.languageState.value, iconEnd = R.drawable.ic_done)
+        LanguageItem(
+            modifier = Modifier
+                .background(
+                    colorResource(R.color.bg_card_language), RoundedCornerShape(6.dp)
+                )
+                .padding(horizontal = 10.dp, vertical = 5.dp),
+            display = viewModel.languageState.value,
+            iconEnd = R.drawable.ic_done
+        )
         TextElement(Modifier.padding(top = 15.dp), R.string.lbl_other_language)
         LazyColumn {
-            items(Const.getListLanguage()) {
-                LanguageItem(display = it)
+            itemsIndexed(Const.getListLanguage()) { index, item ->
+                LanguageItem(
+                    modifier = Modifier.getModifierItemLanguage(
+                        index, Const.getListLanguage().size - Const.INDEX_1
+                    ), item
+                )
             }
         }
     }
@@ -75,8 +94,7 @@ private fun LanguageItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(colorResource(R.color.bg_card_language), RoundedCornerShape(6.dp))
-            .padding(horizontal = 10.dp, vertical = 5.dp)
+            .padding(horizontal = 10.dp, vertical = 7.dp)
             .clickable { viewModel.onEvent(OnboardEvent.ChoiceLanguage(display)) },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
@@ -116,14 +134,6 @@ private fun LanguageItem(
     }
 }
 
-@Composable
-private fun previewBody(){
-    LazyColumn {
-        items(Const.getListLanguage()) {
-            LanguageItemPreview(display = it)
-        }
-    }
-}
 
 @Composable
 private fun LanguageItemPreview(
@@ -135,7 +145,6 @@ private fun LanguageItemPreview(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(colorResource(R.color.bg_card_language), RoundedCornerShape(6.dp))
             .padding(horizontal = 10.dp, vertical = 5.dp)
             .clickable { },
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -162,7 +171,7 @@ private fun LanguageItemPreview(
 
 
         Image(
-            painter = painterResource(R.drawable.ic_radio_checked),
+            painter = painterResource(display.iconRes!!),
             contentDescription = "Done",
             colorFilter = ColorFilter.tint(
                 colorResource(
@@ -182,7 +191,52 @@ fun PreviewBody() {
     MyApplicationTheme() {
         // A surface container using the 'background' color from the theme
         Surface(modifier = Modifier.fillMaxSize()) {
-            previewBody()
+            val list = listOf(
+                Display(
+                    R.string.const_english_en,
+                    content = R.string.const_english_en,
+                    iconRes = R.drawable.ic_done
+                ), Display(
+                    R.string.const_english_en,
+                    content = R.string.const_english_en,
+                    iconRes = R.drawable.ic_done
+                )
+            )
+
+            LazyColumn {
+                itemsIndexed(list) { index, item ->
+                    LanguageItemPreview(
+                        modifier = Modifier.getModifierItemLanguage(
+                            index, list.size - Const.INDEX_1
+                        ), item
+                    )
+                }
+            }
         }
     }
 }
+
+private fun Modifier.getModifierItemLanguage(index: Int, size: Int) = composed(factory = {
+    val modifier1 = Modifier.background(
+        colorResource(R.color.bg_card_language),
+        RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp)
+    )
+
+    val modifier2 = Modifier
+        .background(
+            colorResource(R.color.bg_card_language),
+        )
+        .topBorder(0.1.dp, colorResource(id = R.color.lineLanguage))
+        .bottomBorder(0.1.dp, colorResource(id = R.color.lineLanguage))
+
+    val modifier3 = Modifier.background(
+        colorResource(R.color.bg_card_language),
+        RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp)
+    )
+
+    return@composed when (index) {
+        Const.INDEX_O -> modifier1
+        size -> modifier3
+        else -> modifier2
+    }
+})
