@@ -19,8 +19,8 @@ fun Modifier.bottomBorder(strokeWidth: Dp, color: Color) = composed(factory = {
 
         drawLine(
             color = color,
-            start = Offset(x = 0f, y = height),
-            end = Offset(x = width, y = height),
+            start = Offset(x = 0f, y = size.height),
+            end = Offset(x = width, y = size.height),
             strokeWidth = strokeWidthPx
         )
     }
@@ -41,4 +41,18 @@ fun Modifier.topBorder(strokeWidth: Dp, color: Color) = composed(factory = {
         )
     }
 })
+
+
+// val a =  (2 == 3) or1 10 or2 20
+infix fun <T> Boolean.or1(value: T): ValueWrapper<T> = ValueWrapper(this, value)
+infix fun Boolean.orNull(value: Any): Any? = if (this) value else null
+infix fun <T> Boolean?.orNull(value: T): T? {
+    return if (this == true) {
+        value
+    } else null
+}
+
+class ValueWrapper<T>(private val condition: Boolean, private val value: T) {
+    infix fun or2(value: T): T = if (condition) this.value else value
+}
 

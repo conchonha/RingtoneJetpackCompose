@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -20,15 +20,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myapplication.R
 import com.example.myapplication.presentation.navigations.Router
-import com.example.myapplication.presentation.navigations.navController
+import com.example.myapplication.presentation.screens.onboard.OnboardEvent
 import com.example.myapplication.presentation.screens.onboard.OnboardingViewModel
 import com.example.myapplication.ui.theme.AppStyle
 
 @Composable
-internal fun ButtonGetStarted(modifier: Modifier = Modifier) {
+internal fun ButtonGetStarted(modifier: Modifier = Modifier,viewModel: OnboardingViewModel = hiltViewModel()) {
     Button(
         onClick = {
-            navController.navigate(Router.DashBoard.router)
+            viewModel.onEvent(OnboardEvent.Navigation(Router.DashBoard.router))
         },
         modifier = modifier.height(35.dp),
         shape = RectangleShape,

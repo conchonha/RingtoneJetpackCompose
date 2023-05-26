@@ -23,6 +23,16 @@ class OnboardingViewModel @Inject constructor() : ViewModel() {
     private val _currentPage = mutableIntStateOf(INT_DEFAULT)
     val currentPage: State<Int> = _currentPage
 
+    private val _routerDestination = mutableStateOf(Router.Language.router)
+    val routerDes : State<String> = _routerDestination
+
+    init {
+        _routerDestination.value = when{
+            _sharePrefs.get<Boolean>(Const.KEY_FIRST_LAUNCH_INTRODUCE) == IS_FIRST_LAUNCH -> Router.DashBoard.router
+            _sharePrefs.get<Boolean>(Const.KEY_FIRST_LAUNCH_LANGUAGE) == IS_FIRST_LAUNCH -> Router.Slider.router
+            else -> Router.Language.router
+        }
+    }
 
     fun onEvent(event: OnboardEvent) {
         when (event) {

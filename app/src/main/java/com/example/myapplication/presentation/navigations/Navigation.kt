@@ -2,11 +2,13 @@ package com.example.myapplication.presentation.navigations
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.myapplication.presentation.screens.dashboard.DashBoardNav
+import com.example.myapplication.presentation.screens.dashboard.nav.DashBoardNav
+import com.example.myapplication.presentation.screens.onboard.OnboardingViewModel
 import com.example.myapplication.presentation.screens.onboard.language.Language
 import com.example.myapplication.presentation.screens.onboard.introduce.SlideIntroduce
 
@@ -17,11 +19,13 @@ fun Navigation(){
     val _navController = rememberNavController()
     navController = _navController
 
+   val viewModel : OnboardingViewModel = hiltViewModel()
+
     LaunchedEffect(key1 = _navController, block = {
         navController = _navController
     })
 
-    NavHost(navController = navController, startDestination = Router.Language.router){
+    NavHost(navController = navController, startDestination = viewModel.routerDes.value){
         composable(Router.Language.router){
             Language()
         }
