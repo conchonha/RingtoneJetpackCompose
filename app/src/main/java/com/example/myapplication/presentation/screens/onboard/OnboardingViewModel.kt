@@ -1,7 +1,8 @@
 package com.example.myapplication.presentation.screens.onboard
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.R
@@ -10,7 +11,6 @@ import com.example.myapplication.presentation.navigations.Router
 import com.example.myapplication.presentation.navigations.navController
 import com.example.myapplication.utils.Const
 import com.example.myapplication.utils.SharePrefs
-import com.example.myapplication.utils.SharePrefs.Companion.INT_DEFAULT
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -20,11 +20,11 @@ class OnboardingViewModel @Inject constructor() : ViewModel() {
     private val _languageState = mutableStateOf(Const.getListLanguage().first { it.isChecked })
     val languageState: State<Display> = _languageState
 
-    private val _currentPage = mutableIntStateOf(INT_DEFAULT)
-    val currentPage: State<Int> = _currentPage
-
     private val _routerDestination = mutableStateOf(Router.Language.router)
     val routerDes : State<String> = _routerDestination
+
+    @OptIn(ExperimentalFoundationApi::class)
+    lateinit var pagerState: PagerState
 
     init {
         _routerDestination.value = when{
@@ -38,7 +38,6 @@ class OnboardingViewModel @Inject constructor() : ViewModel() {
         when (event) {
             is OnboardEvent.ChoiceLanguage -> _languageState.value = event.display
             is OnboardEvent.Navigation -> handleNavigateEvent(event.router)
-            is OnboardEvent.CurrentPageIntroduce -> _currentPage.intValue = event.page
             else -> return
         }
     }

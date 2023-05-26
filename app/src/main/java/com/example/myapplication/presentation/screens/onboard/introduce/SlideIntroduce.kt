@@ -24,7 +24,7 @@ const val PAGE_COUNT = 2
 @Composable
 fun SlideIntroduce() {
     val vm : OnboardingViewModel = hiltViewModel()
-    val pagerState = rememberPagerState(
+    vm.pagerState = rememberPagerState(
         initialPage = 0,
         initialPageOffsetFraction = 0f
     ) {
@@ -35,14 +35,11 @@ fun SlideIntroduce() {
      * LaunchedEffect(Key1,Key2): Chỉ chạy 1 lần lúc khởi tạo compose,
      * và được kích hoạt lại khi các giá trị key1,key2 thay đổi giá trị
      * */
-    LaunchedEffect(pagerState, pagerState.currentPage, block = {
-        vm.onEvent(OnboardEvent.CurrentPageIntroduce(pagerState.currentPage))
-    })
 
     ConstraintLayout(modifier = Modifier.background(colorResource(id = R.color.bg))) {
         val (row, button) = createRefs()
 
-        PagerView(pagerState)
+        PagerView()
 
         ButtonGetStarted(modifier = Modifier.constrainAs(button) {
             bottom.linkTo(parent.bottom, margin = 20.dp)

@@ -1,5 +1,6 @@
 package com.example.myapplication.presentation.screens.onboard.introduce.widgets
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -44,6 +45,7 @@ internal fun ButtonGetStarted(modifier: Modifier = Modifier,viewModel: Onboardin
 }
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun IndicatorView(modifier: Modifier = Modifier, viewModel : OnboardingViewModel = hiltViewModel()) {
     Row(modifier.padding(start = 15.dp)) {
@@ -53,7 +55,7 @@ internal fun IndicatorView(modifier: Modifier = Modifier, viewModel : Onboarding
                     .height(7.dp)
                     .width(7.dp)
                     .background(
-                        color = if (it == viewModel.currentPage.value) colorResource(id = R.color.h2CB252) else colorResource(
+                        color = if (it == viewModel.pagerState.currentPage) colorResource(id = R.color.h2CB252) else colorResource(
                             id = R.color.bg1
                         ), shape = CircleShape
                     )

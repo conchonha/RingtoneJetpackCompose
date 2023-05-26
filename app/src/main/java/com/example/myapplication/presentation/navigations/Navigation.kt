@@ -16,14 +16,9 @@ lateinit var navController : NavHostController
 
 @Composable
 fun Navigation(){
-    val _navController = rememberNavController()
-    navController = _navController
+    navController = rememberNavController()
 
    val viewModel : OnboardingViewModel = hiltViewModel()
-
-    LaunchedEffect(key1 = _navController, block = {
-        navController = _navController
-    })
 
     NavHost(navController = navController, startDestination = viewModel.routerDes.value){
         composable(Router.Language.router){

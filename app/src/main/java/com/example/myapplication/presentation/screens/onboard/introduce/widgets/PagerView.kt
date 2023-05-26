@@ -22,6 +22,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.myapplication.presentation.screens.onboard.OnboardingViewModel
 import com.example.myapplication.presentation.screens.onboard.introduce.PAGE_COUNT
 import com.example.myapplication.ui.theme.AppStyle
 import com.example.myapplication.utils.enums.PageIntroduce
@@ -30,10 +32,10 @@ private val page = listOf(PageIntroduce.Introduce1, PageIntroduce.Introduce2)
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun PagerView(pagerState: PagerState) {
+internal fun PagerView(viewModel : OnboardingViewModel = hiltViewModel()) {
     HorizontalPager(
         modifier = Modifier.fillMaxSize(),
-        state = pagerState,
+        state = viewModel.pagerState,
         pageSpacing = 0.dp,
         pageSize = PageSize.Fill,
         userScrollEnabled = true,
