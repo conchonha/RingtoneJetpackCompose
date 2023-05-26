@@ -1,5 +1,6 @@
 package com.example.myapplication.presentation.screens.dashboard
 
+import android.app.Application
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -13,6 +14,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.myapplication.R
+import com.example.myapplication.app.MyApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,15 +39,5 @@ class DashBoardViewModel @Inject constructor() : ViewModel() {
                 else -> return@launch
             }
         }
-    }
-
-
-    companion object {
-        val itemNav = listOf(
-            Pair(R.string.lbl_ringtone, R.drawable.ic_ringtone),
-            Pair(R.string.lbl_wallpaper, R.drawable.ic_image),
-            Pair(R.string.lbl_live_wallpaper, R.drawable.ic_live_image),
-            Pair(R.string.lbl_call, R.drawable.ic_call)
-        )
     }
 }

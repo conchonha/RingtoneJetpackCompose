@@ -125,5 +125,11 @@ object Const {
         }
     }
 
+    fun getNavItems() = listOf(
+        Pair(getString(R.string.lbl_ringtone), R.drawable.ic_ringtone),
+        Pair(getString(R.string.lbl_wallpaper), R.drawable.ic_image),
+        Pair(getString(R.string.lbl_live_wallpaper), R.drawable.ic_live_image),
+        Pair(getString(R.string.lbl_call), R.drawable.ic_call)
+    )
     private fun getString(textId : Int) = MyApplication.application.getString(textId)
 }

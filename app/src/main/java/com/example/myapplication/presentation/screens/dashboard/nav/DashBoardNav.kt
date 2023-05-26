@@ -24,16 +24,26 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
+import com.example.myapplication.presentation.navigations.Router
+import com.example.myapplication.presentation.navigations.navController
 import com.example.myapplication.presentation.screens.dashboard.DashBoardEvent
 import com.example.myapplication.presentation.screens.dashboard.DashBoardViewModel
+import com.example.myapplication.presentation.screens.onboard.OnboardingViewModel
+import com.example.myapplication.presentation.screens.onboard.introduce.SlideIntroduce
+import com.example.myapplication.presentation.screens.onboard.language.Language
+import com.example.myapplication.utils.Const.getNavItems
 import com.example.myapplication.utils.extension.bottomBorder
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-internal fun DashBoardNav(viewModel: DashBoardViewModel = hiltViewModel()) {
+internal fun DashBoardNav() {
+    val viewModel: DashBoardViewModel = hiltViewModel()
     viewModel.scaffoldState = rememberScaffoldState()
     viewModel.coroutine = rememberCoroutineScope()
 
@@ -91,15 +101,16 @@ internal fun DashBoardNav(viewModel: DashBoardViewModel = hiltViewModel()) {
             viewModel.navBackStackEntry = viewModel.navController.currentBackStackEntry
 
             BottomAppBar(cutoutShape = CircleShape) {
-                DashBoardViewModel.itemNav.forEachIndexed { index, pair ->
-                    BottomNavigationItem(icon = {
-                        Icon(
-                            painterResource(id = pair.second),
-                            contentDescription = stringResource(id = pair.first)
-                        )
-                    },
-                        label = { Text(stringResource(id = pair.first)) },
-                        selected = stringResource(id = pair.first) == viewModel.currentRouter,
+                getNavItems().forEach { pair ->
+                    BottomNavigationItem(
+                        icon = {
+                            Icon(
+                                painterResource(id = pair.second),
+                                contentDescription = pair.first
+                            )
+                        },
+                        label = { Text(pair.first) },
+                        selected = pair.first == viewModel.currentRouter,
                         onClick = {
 
                         })
@@ -114,7 +125,21 @@ internal fun DashBoardNav(viewModel: DashBoardViewModel = hiltViewModel()) {
         floatingActionButtonPosition = FabPosition.Center,
         isFloatingActionButtonDocked = true,
         drawerContent = {
+            viewModel.navController = rememberNavController()
 
+            NavHost(navController = viewModel.navController, startDestination = Router.Language.router) {d
+                composable(Router.Language.router) {
+                    Language()
+                }
+
+                composable(Router.Slider.router) {
+                    SlideIntroduce()
+                }
+
+                composable(Router.DashBoard.router) {
+                    DashBoardNav()
+                }
+            }
         }) {
 
     }
