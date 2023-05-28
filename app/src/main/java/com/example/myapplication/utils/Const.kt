@@ -2,9 +2,12 @@ package com.example.myapplication.utils
 
 import com.example.myapplication.R
 import com.example.myapplication.app.MyApplication
+import com.example.myapplication.domain.model.DashBoardItemNav
 import com.example.myapplication.domain.model.Display
+import com.example.myapplication.presentation.navigations.Router
 
 object Const {
+    const val BASE_URL = "https://script.google.com/macros/s/AKfycbyh0-2zECW5vJaif2S-F3Mfp7Ohw9d8JIV_bh4pIEa3hyUSMWfykmIRFMm4xsR7kd8P/"
     const val IS_NIGHT_MODE = "isNightMode"
     const val KEY_LANGUAGE = "keyLanguage"
     const val KEY_FIRST_LAUNCH_LANGUAGE = "KEY_FIRST_LAUNCH_LANGUAGE"
@@ -116,8 +119,8 @@ object Const {
                 content = R.string.const_vietnam_vi
             )
         ).apply {
-            for (element in this){
-                if(element.isChecked){
+            for (element in this) {
+                if (element.isChecked) {
                     return this
                 }
             }
@@ -126,10 +129,18 @@ object Const {
     }
 
     fun getNavItems() = listOf(
-        Pair(getString(R.string.lbl_ringtone), R.drawable.ic_ringtone),
-        Pair(getString(R.string.lbl_wallpaper), R.drawable.ic_image),
-        Pair(getString(R.string.lbl_live_wallpaper), R.drawable.ic_live_image),
-        Pair(getString(R.string.lbl_call), R.drawable.ic_call)
+        DashBoardItemNav(
+            getString(R.string.lbl_ringtone), R.drawable.ic_ringtone, Router.Ringtone.router
+        ), DashBoardItemNav(
+            getString(R.string.lbl_wallpaper), R.drawable.ic_image, Router.Wallpaper.router
+        ), DashBoardItemNav(
+            getString(R.string.lbl_live_wallpaper),
+            R.drawable.ic_live_image,
+            Router.LiveWallPaper.router
+        ), DashBoardItemNav(
+            getString(R.string.lbl_call), R.drawable.ic_call, Router.Call.router
+        )
     )
-    private fun getString(textId : Int) = MyApplication.application.getString(textId)
+
+    private fun getString(textId: Int) = MyApplication.application.getString(textId)
 }

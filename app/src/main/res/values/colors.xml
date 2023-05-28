@@ -27,6 +27,7 @@
     <color name="hF5F5F5">#F5F5F5</color>
     <color name="hD7979696">#D7979696</color>
     <color name="h2CB252">#2CB252</color>
+    <color name="tab_color_unselected">#676C75</color>
     <color name="line">#32AAA5A5</color>
     <color name="lineLanguage">#B4E8FBF7</color>
     <color name="shimmer_highlight">#1DFFFFFF</color>

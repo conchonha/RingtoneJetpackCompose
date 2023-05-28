@@ -88,7 +88,7 @@ private fun TextElement(
 
 
 @Composable
-fun textDescription() {
+private fun textDescription() {
     val annotatedString = buildAnnotatedString {
         withStyle(
             SpanStyle(

@@ -1,41 +1,38 @@
 package com.example.myapplication.presentation.screens.dashboard
 
-import android.app.Application
+import android.annotation.SuppressLint
 import androidx.compose.material.ScaffoldState
-import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.myapplication.R
-import com.example.myapplication.app.MyApplication
+import com.example.myapplication.data.data_source.ApiService
+import com.example.myapplication.data.data_source.config.ResponseAPI
+import com.example.myapplication.domain.model.CategoryResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class DashBoardViewModel @Inject constructor() : ViewModel() {
+class DashBoardViewModel @Inject constructor(public val apiService: ApiService) : ViewModel() {
     lateinit var scaffoldState: ScaffoldState
     lateinit var coroutine: CoroutineScope
 
     lateinit var navController: NavHostController
-    var navBackStackEntry: NavBackStackEntry? = null
-    val currentRouter = navBackStackEntry?.destination?.route
+    private val _currentPage = mutableIntStateOf(0)
+    val currentPage: State<Int> = _currentPage
 
+    @SuppressLint("AutoboxingStateValueProperty")
     fun onEvent(event: DashBoardEvent) {
         coroutine.launch {
             when (event) {
                 is DashBoardEvent.OpenDrawer -> scaffoldState.drawerState.open()
-                is DashBoardEvent.InitStateDashBoar -> scaffoldState = event.scaffoldState
+                is DashBoardEvent.SetCurrentPage -> _currentPage.value = event.index
+                is DashBoardEvent.Navigation -> navController.navigate(event.router)
+                is DashBoardEvent.GetAllCategory -> apiService.getAllCategory()
                 else -> return@launch
             }
         }

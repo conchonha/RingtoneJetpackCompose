@@ -2,7 +2,6 @@ package com.example.myapplication.presentation.screens.onboard.language
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -13,9 +12,9 @@ import androidx.constraintlayout.compose.Dimension
 import com.example.myapplication.R
 import com.example.myapplication.presentation.screens.onboard.language.widgets.AppBar
 import com.example.myapplication.presentation.screens.onboard.language.widgets.Body
-import com.example.myapplication.ui.theme.MyApplicationTheme
 
 @Composable
+@Preview(showBackground = true)
 fun Language() {
     ConstraintLayout(
         modifier = Modifier
@@ -41,16 +40,5 @@ fun Language() {
             width = Dimension.fillToConstraints
             height = Dimension.fillToConstraints
         })
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
- fun PreviewLanguage() {
-    MyApplicationTheme() {
-        // A surface container using the 'background' color from the theme
-        Surface(modifier = Modifier.fillMaxSize()) {
-            Language()
-        }
     }
 }

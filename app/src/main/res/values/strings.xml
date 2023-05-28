@@ -123,5 +123,44 @@
     <string name="lbl_func_not_finish">"Unfinished function "</string>
     <string name="lbl_call_default">Call Permission</string>
     <string name="lbl_call_default_permission">You must provide the following permissions to continue using the function</string>
-
+    <string name="null_error">This field require not null</string>
+    <string name="email_error">Email is not valid</string>
+    <string name="password_error">Password must input at least 6 character</string>
+    <string name="phone_error">Phone number is not valid</string>
+    <string name="name_is_not_valid">User Name is not valid</string>
+    <string name="address_error">Address is not valid</string>
+    <string name="error_loading_photo">Tải ảnh xảy ra lỗi</string>
+    <string name="change_password">Change Password</string>
+    <string name="no_information">No Information</string>
+    <string name="show">Show</string>
+    <string name="hide">Hide</string>
+    <string name="exception_no_internet">Exception No internet connection</string>
+    <string name="exception_time_out_error">Exception Timeout error occurred</string>
+    <string name="exception_you_do_not_have_access">Exception you do not have access</string>
+    <string name="exception_format_error">Exception Format error occurred</string>
+    <string name="exception_there_is_no_address">Exception there is no address associated with the server</string>
+    <string name="exception_value_is_not_a_type_of_data">Exception value is not a type of data</string>
+    <string name="exception_unexpected_error">Exception Unexpected error occurred</string>
+    <string name="exception_unauthorised_request">Exception Unauthorised request</string>
+    <string name="you_dont_have_permission_to_access">You don’t have permission to access [directory] on this server</string>
+    <string name="authorization_required">Authorization Required</string>
+    <string name="not_found_url">Not found url</string>
+    <string name="exception_error_due_to_a_conflict">Exception Error due to a conflict</string>
+    <string name="exception_connection_request_timeout">Exception Connection request timeout</string>
+    <string name="exception_internal_server">Exception Internal Server Error</string>
+    <string name="exception_service_unavailable">Exception Service unavailable</string>
+    <string name="exception_receive_invalid_status_code">Exception Received invalid status code:=</string>
+    <string name="media_network_or_file_error">File or network related operational error.</string>
+    <string name="media_error_unknow">Unknown media player error. </string>
+    <string name="media_error_server_died">Media server is dead, reboot</string>
+    <string name="media_error_not_valid">Invalid file or video</string>
+    <string name="net_work_error">Please check the network again</string>
+    <string name="media_error_malformed">Invalid file encryption</string>
+    <string name="media_time_out">Running over time</string>
+    <string name="statusCode">statusCode</string>
+    <string name="message">message</string>
+    <string name="lbl_oke">Oke</string>
+    <string name="lbl_cancel">Cancel</string>
+    <string name="lbl_exception">Exception</string>
+    <string name="lbl_box">Dialog box</string>
 </resources>

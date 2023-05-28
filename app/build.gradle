@@ -27,20 +27,29 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
+        debug{
+            debuggable true
+        }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+
     kotlinOptions {
         jvmTarget = '17'
     }
+
     buildFeatures {
         compose true
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion '1.4.5'
     }
+
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
@@ -101,7 +110,6 @@ dependencies {
     //Dagger - Hilt
     implementation 'com.google.dagger:hilt-android:2.46'
     kapt 'com.google.dagger:hilt-compiler:2.46'
-    kapt "androidx.hilt:hilt-compiler:1.0.0"
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
 
     //coroutine
@@ -110,6 +118,11 @@ dependencies {
 
     //
     implementation "androidx.compose.material:material:1.4.3"
+
+     // Retrofit
+    api("com.squareup.retrofit2:retrofit:${rootProject.ext.lib_versions.retrofit}")
+    api("com.squareup.retrofit2:converter-gson:${rootProject.ext.lib_versions.retrofit}")
+    api "com.squareup.okhttp3:logging-interceptor:${rootProject.ext.lib_versions.logging}"
 
     //LiveData compose
 //    implementation("androidx.ui:ui-livedata:1.5.0-alpha04") // val state by liveData.observeAsState()
