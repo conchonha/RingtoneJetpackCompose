@@ -6,6 +6,10 @@ import com.example.myapplication.data.data_source.config.FollowAdapterFactory
 import com.example.myapplication.data.data_source.config.LoggingInterceptor
 import com.example.myapplication.data.data_source.config.ResponseAPI
 import com.example.myapplication.data.data_source.config.TLSSocketFactory
+import com.example.myapplication.data.repository.RingtoneRepositoryImpl
+import com.example.myapplication.domain.repository.RingtoneRepository
+import com.example.myapplication.domain.use_case.GetAllCategory
+import com.example.myapplication.domain.use_case.RingtoneUserCase
 import com.example.myapplication.utils.Const.BASE_URL
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -43,22 +47,24 @@ class NetworkModule {
      */
     @Singleton
     @Provides
-    fun providesLoggingInterceptorBuilder(): LoggingInterceptor.Builder = LoggingInterceptor.Builder()
-        .request("Request")
-        .response("Response")
-        .addHeader("Content-Type", "application/json")
-        .addHeader("Accept", "application/json")
+    fun providesLoggingInterceptorBuilder(): LoggingInterceptor.Builder =
+        LoggingInterceptor.Builder()
+            .request("Request")
+            .response("Response")
+            .addHeader("Content-Type", "application/json")
+            .addHeader("Accept", "application/json")
 
     /**
      * @sample providesFollowAdapterFactoryBuilder create builder as Builder Pattern
      */
     @Singleton
     @Provides
-    fun providesFollowAdapterFactoryBuilder() : FollowAdapterFactory.Builder = FollowAdapterFactory.Builder()
-        .setTag("SangTB")
-        .handleResponseFromServe {
-            return@handleResponseFromServe ResponseAPI.Success(this.body())
-        }
+    fun providesFollowAdapterFactoryBuilder(): FollowAdapterFactory.Builder =
+        FollowAdapterFactory.Builder()
+            .setTag("SangTB")
+            .handleResponseFromServe {
+                return@handleResponseFromServe ResponseAPI.Success(this.body())
+            }
 
     /**
      * @sample provideGson
@@ -66,7 +72,7 @@ class NetworkModule {
      */
     @Singleton
     @Provides
-    fun provideGson() : Gson = GsonBuilder()
+    fun provideGson(): Gson = GsonBuilder()
         .setLenient()
         .create()
 
@@ -77,10 +83,13 @@ class NetworkModule {
      */
     @Singleton
     @Provides
-    fun providesOkHttpClient(application: Application,loggingInterceptor: LoggingInterceptor): OkHttpClient{
+    fun providesOkHttpClient(
+        application: Application,
+        loggingInterceptor: LoggingInterceptor
+    ): OkHttpClient {
         val cacheDir = File(application.cacheDir, UUID.randomUUID().toString())
         val cacheSize = (10 * 1024 * 1024).toLong() //10mb
-        val cache = Cache(cacheDir,  cacheSize)
+        val cache = Cache(cacheDir, cacheSize)
 
         //socket factory
         val tslFactory = TLSSocketFactory()
@@ -101,7 +110,11 @@ class NetworkModule {
      */
     @Provides
     @Singleton
-    fun provideRetrofitBuilder(httpClient: OkHttpClient, factory: FollowAdapterFactory, gson : Gson): Retrofit.Builder {
+    fun provideRetrofitBuilder(
+        httpClient: OkHttpClient,
+        factory: FollowAdapterFactory,
+        gson: Gson
+    ): Retrofit.Builder {
         return Retrofit.Builder()
             .client(httpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
@@ -110,5 +123,18 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(builder : Retrofit.Builder) = builder.baseUrl(BASE_URL).build().create<ApiService>()
+    fun provideRetrofit(builder: Retrofit.Builder) =
+        builder.baseUrl(BASE_URL).build().create<ApiService>()
+
+    @Provides
+    @Singleton
+    fun provideRingtoneRepository(apiService: ApiService): RingtoneRepository {
+        return RingtoneRepositoryImpl(apiService)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRingtoneUseCase(ringtoneRepository: RingtoneRepository): RingtoneUserCase {
+        return RingtoneUserCase(GetAllCategory((ringtoneRepository)))
+    }
 }
