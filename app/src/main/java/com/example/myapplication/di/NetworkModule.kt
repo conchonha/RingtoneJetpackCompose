@@ -2,9 +2,8 @@ package com.example.myapplication.di
 
 import android.app.Application
 import com.example.myapplication.data.data_source.ApiService
-import com.example.myapplication.data.data_source.config.FollowAdapterFactory
+import com.example.myapplication.data.data_source.config.FlowAdapterFactory
 import com.example.myapplication.data.data_source.config.LoggingInterceptor
-import com.example.myapplication.data.data_source.config.ResponseAPI
 import com.example.myapplication.data.data_source.config.TLSSocketFactory
 import com.example.myapplication.data.repository.RingtoneRepositoryImpl
 import com.example.myapplication.domain.repository.RingtoneRepository
@@ -55,18 +54,6 @@ class NetworkModule {
             .addHeader("Accept", "application/json")
 
     /**
-     * @sample providesFollowAdapterFactoryBuilder create builder as Builder Pattern
-     */
-    @Singleton
-    @Provides
-    fun providesFollowAdapterFactoryBuilder(): FollowAdapterFactory.Builder =
-        FollowAdapterFactory.Builder()
-            .setTag("SangTB")
-            .handleResponseFromServe {
-                return@handleResponseFromServe ResponseAPI.Success(this.body())
-            }
-
-    /**
      * @sample provideGson
      * init gson using for ConverterFactory retrofit convert json -> object
      */
@@ -112,13 +99,12 @@ class NetworkModule {
     @Singleton
     fun provideRetrofitBuilder(
         httpClient: OkHttpClient,
-        factory: FollowAdapterFactory,
         gson: Gson
     ): Retrofit.Builder {
         return Retrofit.Builder()
             .client(httpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
-            .addCallAdapterFactory(factory)
+            .addCallAdapterFactory(FlowAdapterFactory())
     }
 
     @Provides

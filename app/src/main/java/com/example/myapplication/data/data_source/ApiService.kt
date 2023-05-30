@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface ApiService {
-    @GET("exc")
+    @GET("exec")
     fun getAllCategory(
         @Query("action") action: String = "Category",
         @Query("value") value: String = "ALL",

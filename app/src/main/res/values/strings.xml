@@ -163,4 +163,9 @@
     <string name="lbl_cancel">Cancel</string>
     <string name="lbl_exception">Exception</string>
     <string name="lbl_box">Dialog box</string>
+    <string name="exception_socket">An error occurred while using the socket to establish and maintain a network connection</string>
+    <string name="exception_ioe">An error occurs when there is a problem in reading or writing data from a source or to an offline destination, such as a file, socket, data stream.</string>
+    <string name="exception_json_parse">The error occurs when there is an error in parsing the JSON received from the server.</string>
+    <string name="exception_http">An error occurred when a failed response code was received from the server.</string>
+    <string name="ssl_hands_hake">The error occurs when there is a problem with SSL/TLS authentication when establishing a secure connection.</string>
 </resources>

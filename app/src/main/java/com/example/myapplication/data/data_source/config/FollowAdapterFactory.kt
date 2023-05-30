@@ -1,6 +1,7 @@
 package com.example.myapplication.data.data_source.config
 
-import android.app.Application
+import android.util.Log
+import com.example.myapplication.utils.DialogUtils
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -8,17 +9,14 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import retrofit2.*
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.coroutines.resume
 
-@Singleton
-class FollowAdapterFactory @Inject constructor(
-    private val builder: Builder,
-    private val application: Application
-) : CallAdapter.Factory() {
-    private val handleException = HandleException.getInstance(application)
-
+class FlowAdapterFactory : CallAdapter.Factory() {
+    private val handleException = HandleException.getInstance()
+    /*
+    * returnType: kiểu dữ liệu trả về của phương thức trong interface
+    * annotations:  Mảng các annotations được áp dụng cho phương thức gọi trong Retrofit service interface
+    * */
     override fun get(
         returnType: Type, annotations: Array<out Annotation>, retrofit: Retrofit
     ): CallAdapter<*, *>? {
@@ -26,93 +24,58 @@ class FollowAdapterFactory @Inject constructor(
         //just accept type is flow
         if (rawType != Flow::class.java) return null
 
-        // not is Parameterized (object/collection)
-        if (returnType !is ParameterizedType) {
-            throw IllegalStateException(
-                "ResponseAPI<T> return type must be parameterized" + " as " + "ResponseAPI<T><Foo> or " + "ResponseAPI<T><? extends Foo>"
-            )
-        }
-
-        val innerType: Type = getParameterUpperBound(0, returnType)
-        return CallAdapterWithResponseAPI<Any?>(innerType)
+        val responseType = getParameterUpperBound(0, returnType as ParameterizedType) //ResponseApi<Lit<T>>
+        val innerType = getParameterUpperBound(0, responseType as ParameterizedType) // List<T>
+        return CallAdapterWithResponseAPI<ResponseAPI<*>>(innerType = innerType)
     }
 
-    private inner class CallAdapterWithResponseAPI<T>(private val responseType: Type) :
-        CallAdapter<T, Flow<ResponseAPI<T>>> {
-        override fun responseType() = responseType
+    private inner class CallAdapterWithResponseAPI<T>(val innerType: Type) : CallAdapter<T, Flow<ResponseAPI<T>>> {
+        override fun responseType() = innerType //innerType type để gson convert from response.body từ server
 
-        override fun adapt(call: Call<T>) = flow {
+        override fun adapt(call: Call<T>) : Flow<ResponseAPI<T>> = flow {
+            DialogUtils.showLoading()
             emit(suspendCancellableCoroutine { continuation ->
                 //auto cancel when continuation. It is completed when resumed or cancelled, synchrony
                 continuation.invokeOnCancellation {
+                    DialogUtils.hideLoading()
                     call.cancel()
                 }
-                call.enqueue(FlowCallback(handleException, builder, continuation))
+                call.enqueue(FlowCallback(continuation))
             })
+
         }
     }
 
     @Suppress("UNCHECKED_CAST")
-    class FlowCallback<T>(
-        private val handleException: HandleException,
-        private val builder: Builder,
-        private val continuation: CancellableContinuation<ResponseAPI<T>>
+    private class FlowCallback<T>(
+        private  val continuation: CancellableContinuation<ResponseAPI<T>>
     ) : Callback<T> {
         override fun onResponse(call: Call<T>, response: Response<T>) {
             handleApiResponse(response, continuation)
         }
 
         override fun onFailure(call: Call<T>, t: Throwable) {
-            handleException.handleNetworkException(t).let {
-                continuation.resume(
-                    ResponseAPI.NetworkException(
-                        it?.first.toString(),
-                        it?.second ?: ExceptionType.TYPE_DEFAULT
-                    )
-                )
+            Log.d("AAAA", "onFailure: ${t.message}")
+            HandleException.getInstance().handleNetworkException(t).let {
+                continuation.resume(ResponseAPI.NetworkException(it?.first ?: t.message.toString(), it?.second ?:  ExceptionType.TYPE_DEFAULT))
             }
         }
 
-        //demo test = func sau ddos tach ra class rieng
         private fun <T> handleApiResponse(
             response: Response<T>, continuation: CancellableContinuation<ResponseAPI<T>>
         ) {
-            if (response.isSuccessful.not()) {
-                handleException.handleExceptionNetwork(response.code()).let {
+            Log.d("AAAA", "handleApiResponse: ${response.body()}")
+            if (response.isSuccessful.not() || response.body() == null) {
+                HandleException.getInstance().handleExceptionNetwork(response.code()).let {
                     continuation.resume(
                         ResponseAPI.NetworkException(
                             it?.first.toString(),
                             it?.second ?: ExceptionType.TYPE_DEFAULT
-                        )
-                    )
+                        ))
                 }
+            }else{
+                continuation.resume(ResponseAPI.Success(response.body() as T))
             }
-
-            if (response.body() == null) {
-                continuation.resume(
-                    ResponseAPI.NetworkException(
-                        "Exception nothing response data ",
-                        ExceptionType.TYPE_NULL_THROWN_ERROR
-                    )
-                )
-            }
-
-            (builder.response?.invoke(response) as? ResponseAPI<T>)?.let {
-                continuation.resume(it)
-            } ?: continuation.resume(ResponseAPI.Success(response.body()!!))
-        }
-    }
-
-    class Builder {
-        private var tag = this.javaClass.name
-        internal var response: (Response<*>.() -> ResponseAPI<*>)? = null
-
-        fun setTag(tag1: String) = apply {
-            tag = tag1
-        }
-
-        fun handleResponseFromServe(call: Response<*>.() -> ResponseAPI<*>) = apply {
-            response = call
         }
     }
 }

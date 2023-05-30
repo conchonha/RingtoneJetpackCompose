@@ -4,12 +4,17 @@ import android.app.Application
 import android.media.MediaPlayer
 import android.nfc.FormatException
 import com.example.myapplication.R
+import com.example.myapplication.app.MyApplication
 import com.example.myapplication.utils.SingleLiveEvent
 import com.example.myapplication.utils.Validator
+import com.google.gson.JsonParseException
+import retrofit2.HttpException
 import java.io.IOException
 import java.net.SocketException
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.util.concurrent.TimeoutException
+import javax.net.ssl.SSLHandshakeException
 
 class HandleException private constructor(private val application: Application) : Throwable() {
     private var TAG: String = this.javaClass.name
@@ -25,8 +30,12 @@ class HandleException private constructor(private val application: Application) 
 
         when (throwable) {
             is SocketException -> {
-                message = application.getString(R.string.exception_no_internet)
-                type = ExceptionType.TYPE_NO_INTERNET
+                message = application.getString(R.string.exception_socket)
+                type = ExceptionType.TYPE_SOCKET
+            }
+            is SocketTimeoutException ->{
+                message = application.getString(R.string.exception_time_out_error)
+                type = ExceptionType.TYPE_CONNECT_TIMEOUT
             }
             is TimeoutException -> {
                 message = application.getString(R.string.exception_time_out_error)
@@ -45,8 +54,20 @@ class HandleException private constructor(private val application: Application) 
                 message = application.getString(R.string.exception_there_is_no_address)
             }
             is IOException -> {
-                message = application.getString(R.string.exception_no_internet)
-                type = ExceptionType.TYPE_NO_INTERNET
+                message = application.getString(R.string.exception_ioe)
+                type = ExceptionType.TYPE_IOE
+            }
+            is JsonParseException ->{
+                message = application.getString(R.string.exception_json_parse)
+                type = ExceptionType.TYPE_JSON_PARSE
+            }
+            is HttpException ->{
+                message = application.getString(R.string.exception_http)
+                type = ExceptionType.TYPE_HTTP_EXCEPTION
+            }
+            is SSLHandshakeException ->{
+                message = application.getString(R.string.ssl_hands_hake)
+                type = ExceptionType.SSL_HANDS_HAKE
             }
             else -> {
                 if (throwable?.message?.contains("is not a subtype of") == true) {
@@ -142,14 +163,14 @@ class HandleException private constructor(private val application: Application) 
     companion object {
         private var instance: HandleException? = null
 
-        fun getInstance(application: Application) = synchronized(this) {
-            instance ?: HandleException(application).also { instance = it }
+        fun getInstance() = synchronized(this) {
+            instance ?: HandleException(MyApplication.application).also { instance = it }
         }
     }
 }
 
 enum class ExceptionType {
-    TYPE_UNKNOWN_HOST, TYPE_SECURITY, TYPE_CONNECT_TIMEOUT, TYPE_DEFAULT, TYPE_NULL_THROWN_ERROR, TYPE_NO_INTERNET, TYPE_UNEXPECTED_ERROR, TYPE_FORMAT_EXCEPTION, TYPE_UNABLE_TO_PROCESS, TYPE_400, TYPE_401, TYPE_403, TYPE_404, TYPE_409, TYPE_408, TYPE_500, TYPE_503, TYPE_MEDIA_PLAYER
+    TYPE_UNKNOWN_HOST, TYPE_SECURITY, TYPE_CONNECT_TIMEOUT, TYPE_DEFAULT, TYPE_NULL_THROWN_ERROR, TYPE_NO_INTERNET, TYPE_UNEXPECTED_ERROR, TYPE_FORMAT_EXCEPTION, TYPE_UNABLE_TO_PROCESS, TYPE_400, TYPE_401, TYPE_403, TYPE_404, TYPE_409, TYPE_408, TYPE_500, TYPE_503, TYPE_MEDIA_PLAYER,TYPE_IOE, TYPE_JSON_PARSE, TYPE_HTTP_EXCEPTION, SSL_HANDS_HAKE, TYPE_SOCKET
 }
 
 private object ExceptionCode {
