@@ -7,6 +7,12 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
+import com.example.myapplication.data.data_source.config.ResponseAPI
+import com.example.myapplication.domain.model.CategoryResponse
+import com.example.myapplication.domain.model.SortedModel
+import com.example.myapplication.utils.storted.SortedProperty
+import com.example.myapplication.utils.storted.SortedType
+import kotlinx.coroutines.flow.map
 
 
 fun Modifier.bottomBorder(strokeWidth: Dp, color: Color) = composed(factory = {
@@ -42,6 +48,37 @@ fun Modifier.topBorder(strokeWidth: Dp, color: Color) = composed(factory = {
     }
 })
 
+
+fun List<SortedModel>.sored(sortedProperty: SortedProperty) : List<SortedModel>{
+    val data: List<SortedModel> = when (sortedProperty.sortedType) {
+        is SortedType.Ascending -> {
+            when (sortedProperty) {
+                is SortedProperty.Title -> this.sortedBy {
+                    it.titleSort.lowercase()
+                }
+
+                is SortedProperty.Id -> this.sortedBy { it.idSort }
+                is SortedProperty.Size -> this.sortedBy { it.sizeSort }
+                else -> this.shuffled()
+            }
+        }
+
+        is SortedType.Descending -> {
+            when (sortedProperty) {
+                is SortedProperty.Title -> this.sortedByDescending {
+                    it.titleSort.lowercase()
+                }
+
+                is SortedProperty.Id -> this.sortedByDescending { it.idSort }
+                is SortedProperty.Size -> this.sortedByDescending { it.sizeSort }
+                else -> this.shuffled()
+            }
+        }
+
+        else -> this.shuffled()
+    }
+    return data
+}
 
 // val a =  (2 == 3) or1 10 or2 20
 infix fun <T> Boolean.or1(value: T): ValueWrapper<T> = ValueWrapper(this, value)

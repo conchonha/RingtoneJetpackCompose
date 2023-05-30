@@ -14,7 +14,7 @@ data class CategoryResponse(
     val total: Int? = 0,
     @SerializedName("type")
     val type: String? = ""
-) {
+) : SortedModel(titleSort = name.toString(), idSort = id ?: 0, sizeSort = total.toString()) {
     override fun hashCode() = id ?: super.hashCode()
 
     override fun equals(other: Any?): Boolean {
