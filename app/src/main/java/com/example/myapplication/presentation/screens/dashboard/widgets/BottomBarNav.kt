@@ -1,4 +1,4 @@
-package com.example.myapplication.presentation.screens.dashboard.nav.widgets
+package com.example.myapplication.presentation.screens.dashboard.widgets
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth

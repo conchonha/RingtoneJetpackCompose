@@ -14,36 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.R
+import com.example.myapplication.component.ItemRingtone
 import com.example.myapplication.domain.model.CategoryResponse
 import com.example.myapplication.presentation.screens.dashboard.DashBoardViewModel
-import com.example.myapplication.presentation.screens.dashboard.nav.widgets.LocalViewModel
+import com.example.myapplication.presentation.screens.dashboard.widgets.LocalViewModel
 
 @Composable
 fun Ringtone(modifier: Modifier = Modifier, viewModel: DashBoardViewModel? = LocalViewModel.current) {
-    val data : State<List<CategoryResponse>> = viewModel?.list1?.collectAsState() ?: return
-
-    Box(
-        modifier
-            .fillMaxSize()
-            .background(color = colorResource(id = R.color.bg))
-    ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(15.dp)
-        ) {
-           item {
-               Text(text = "SangTB")
-           }
-
-
-            itemsIndexed(data.value){_, item ->
-                Text(text = item.name.toString())
-            }
-
-            item {
-                Text(text = "SangTB")
-            }
-        }
-    }
+    ItemRingtone()
 }

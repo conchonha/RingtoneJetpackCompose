@@ -17,9 +17,9 @@ import com.example.myapplication.R
 import com.example.myapplication.presentation.screens.dashboard.DashBoardViewModel
 import com.example.myapplication.component.AppbarDashBoard
 import com.example.myapplication.presentation.screens.dashboard.DashBoardEvent
-import com.example.myapplication.presentation.screens.dashboard.nav.widgets.BottomBarNav
-import com.example.myapplication.presentation.screens.dashboard.nav.widgets.DrawerContent
-import com.example.myapplication.presentation.screens.dashboard.nav.widgets.Nav
+import com.example.myapplication.presentation.screens.dashboard.widgets.BottomBarNav
+import com.example.myapplication.presentation.screens.dashboard.widgets.DrawerContent
+import com.example.myapplication.presentation.screens.dashboard.widgets.Nav
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
