@@ -22,7 +22,7 @@ import com.example.myapplication.presentation.screens.dashboard.DashBoardViewMod
 import com.example.myapplication.utils.Const
 
 @Composable
-fun BottomBarNav(viewModel: DashBoardViewModel = hiltViewModel()) {
+fun BottomBarNav(viewModel: DashBoardViewModel) {
 
     BottomAppBar(
         cutoutShape = CircleShape,

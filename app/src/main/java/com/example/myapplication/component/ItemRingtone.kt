@@ -21,10 +21,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import coil.compose.rememberImagePainter
 import com.example.myapplication.R
 import com.example.myapplication.presentation.screens.dashboard.DashBoardViewModel
 import com.example.myapplication.presentation.screens.dashboard.widgets.LocalViewModel
 import com.example.myapplication.ui.theme.AppStyle
+import com.example.myapplication.utils.ImageLoaderUtils
+import com.example.myapplication.utils.ImageLoaderUtils.ImageWithProgress
 
 @Composable
 @Preview(showBackground = true)
@@ -52,7 +55,7 @@ private fun LinerView(modifier: Modifier = Modifier, viewModel: DashBoardViewMod
             ) {
                 val (image, colum, next) = createRefs()
 
-                ImageWithProgress(Modifier.constrainAs(image) {
+                ImageLoaderUtils.LoadImage(Modifier.constrainAs(image) {
                     start.linkTo(parent.start)
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)

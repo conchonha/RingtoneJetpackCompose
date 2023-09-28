@@ -47,7 +47,7 @@ class FlowAdapterFactory : CallAdapter.Factory() {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private class FlowCallback<T>(
+    private inner class FlowCallback<T>(
         private  val continuation: CancellableContinuation<ResponseAPI<T>>
     ) : Callback<T> {
         override fun onResponse(call: Call<T>, response: Response<T>) {
@@ -56,7 +56,7 @@ class FlowAdapterFactory : CallAdapter.Factory() {
 
         override fun onFailure(call: Call<T>, t: Throwable) {
             Log.d("AAAA", "onFailure: ${t.message}")
-            HandleException.getInstance().handleNetworkException(t).let {
+            handleException.handleNetworkException(t).let {
                 continuation.resume(ResponseAPI.NetworkException(it?.first ?: t.message.toString(), it?.second ?:  ExceptionType.TYPE_DEFAULT))
             }
         }
@@ -66,7 +66,7 @@ class FlowAdapterFactory : CallAdapter.Factory() {
         ) {
             Log.d("AAAA", "handleApiResponse: ${response.body()}")
             if (response.isSuccessful.not() || response.body() == null) {
-                HandleException.getInstance().handleExceptionNetwork(response.code()).let {
+                handleException.handleExceptionNetwork(response.code()).let {
                     continuation.resume(
                         ResponseAPI.NetworkException(
                             it?.first.toString(),

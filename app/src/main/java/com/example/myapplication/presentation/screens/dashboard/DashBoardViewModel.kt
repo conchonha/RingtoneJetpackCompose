@@ -22,13 +22,13 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-typealias CallBackDefault = (()->Unit)
+typealias CallBackDefault = (() -> Unit)?
 
 @HiltViewModel
 class DashBoardViewModel @Inject constructor(private val ringtoneUserCase: RingtoneUserCase) :
     ViewModel() {
     lateinit var scaffoldState: ScaffoldState
-    lateinit var coroutine: CoroutineScope
+    var coroutine: CoroutineScope? = null
     lateinit var navController: NavHostController
 
     private val _currentPage = mutableIntStateOf(0)
@@ -38,26 +38,27 @@ class DashBoardViewModel @Inject constructor(private val ringtoneUserCase: Ringt
     val tabState: State<TabState> = _tabState
 
     private val _appbarState = mutableStateOf(AppBarState())
-    val appbarState : State<AppBarState> = _appbarState
+    val appbarState: State<AppBarState> = _appbarState
 
     @SuppressLint("AutoboxingStateValueProperty")
-    infix fun onEvent(event: DashBoardEvent) {
-        coroutine.launch {
+    fun onEvent(event: DashBoardEvent) {
+        (coroutine ?: viewModelScope).launch {
             when (event) {
                 is DashBoardEvent.OpenDrawer -> scaffoldState.drawerState.open()
                 is DashBoardEvent.SetCurrentPage -> _currentPage.value = event.index
                 is DashBoardEvent.Navigation -> navController.navigate(event.router)
                 is DashBoardEvent.GetAllCategory -> ringtoneUserCase.getAllCategory(SortedProperty.Normal)
                     .onEach {
-                        it.forEach {  }
                         _tabState.value = tabState.value.copy(datas = it)
                     }.flowOn(Dispatchers.Main)
                     .launchIn(viewModelScope)
+
+                else -> {}
             }
         }
     }
 
-    companion object{
+    companion object {
         const val EMPTY_ICON_DEFAULT = -1
     }
 }
@@ -69,13 +70,13 @@ data class TabState(
 )
 
 data class AppBarState(
-    val title : String = "",
-    val isVisibleIconBack : Boolean = true,
-    val isVisibleIconEnd1 : Boolean = false,
-    val isVisibleIconEnd2 : Boolean = false,
-    val isVisibleIconEnd3 : Boolean = false,
-    val srcIconEnd1 : Int = R.drawable.ic_grird,
-    val srcIconEnd2 : Int = R.drawable.ic_search,
-    val srcIconEnd3 : Int = EMPTY_ICON_DEFAULT,
-    val srcIconBack : Int = R.drawable.ic_menu
+    val title: String = "",
+    val isVisibleIconBack: Boolean = true,
+    val isVisibleIconEnd1: Boolean = false,
+    val isVisibleIconEnd2: Boolean = false,
+    val isVisibleIconEnd3: Boolean = false,
+    val srcIconEnd1: Int = R.drawable.ic_grird,
+    val srcIconEnd2: Int = R.drawable.ic_search,
+    val srcIconEnd3: Int = EMPTY_ICON_DEFAULT,
+    val srcIconBack: Int = R.drawable.ic_menu
 )

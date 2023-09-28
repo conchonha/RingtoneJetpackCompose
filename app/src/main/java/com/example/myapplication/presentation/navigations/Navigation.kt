@@ -2,13 +2,12 @@ package com.example.myapplication.presentation.navigations
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.myapplication.presentation.screens.dashboard.DashBoardNav
 import com.example.myapplication.presentation.screens.dashboard.DashBoardViewModel
-import com.example.myapplication.presentation.screens.dashboard.nav.DashBoardNav
 import com.example.myapplication.presentation.screens.onboard.OnboardingViewModel
 import com.example.myapplication.presentation.screens.onboard.language.Language
 import com.example.myapplication.presentation.screens.onboard.introduce.SlideIntroduce
@@ -16,10 +15,10 @@ import com.example.myapplication.presentation.screens.onboard.introduce.SlideInt
 lateinit var navController: NavHostController
 
 @Composable
-fun Navigation() {
+fun Navigation(vm : DashBoardViewModel) {
     navController = rememberNavController()
 
-   val viewModel : OnboardingViewModel = hiltViewModel()
+    val viewModel: OnboardingViewModel = hiltViewModel()
 
     NavHost(navController = navController, startDestination = viewModel.routerDes.value) {
         composable(Router.Language.router) {
@@ -31,7 +30,7 @@ fun Navigation() {
         }
 
         composable(Router.DashBoard.router) {
-            DashBoardNav()
+            DashBoardNav(vm)
         }
     }
 }
